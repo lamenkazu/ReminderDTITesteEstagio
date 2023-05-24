@@ -99,12 +99,18 @@
         android:backgroundTint="@color/myRed"
         />
 
-    <ListView
+    <ExpandableListView
         android:id="@+id/reminder_list"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_create"
         android:layout_marginTop="10dp"
+
+        android:indicatorLeft="?android:expandableListPreferredChildIndicatorLeft"
+        android:divider="@color/myRed"
+        android:dividerHeight="1dp"
         />
+
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,17 +26,19 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ReminderAdapter reminderAdapter;
+
     TextInputEditText txtReminder, txtDate;
     MaterialDatePicker<Long> materialDatePicker;
     MaterialButton btnCreate;
-    ListView reminderListView;
+    ExpandableListView dateListView;
+
 
     private void startComponents(){
         txtReminder = findViewById(R.id.txt_reminder);
         txtDate = findViewById(R.id.txt_date);
         btnCreate = findViewById(R.id.btn_create);
-        reminderListView = findViewById(R.id.reminder_list);
-        reminderListView.setAdapter(new ReminderAdapter(MainActivity.this));
+        dateListView = findViewById(R.id.reminder_list);
 
         materialDatePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Choose date to remind")
@@ -64,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
 
         startComponents();
 
+        reminderAdapter = new ReminderAdapter(MainActivity.this);
+        dateListView.setAdapter(reminderAdapter);
+
         txtDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -82,9 +88,20 @@ public class MainActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(txtReminder.getWindowToken(), 0);
 
-                ReminderAdapter.addList(new Reminder(txtReminder.getText().toString(), txtDate.getText().toString()));
-                ((BaseAdapter) reminderListView.getAdapter()).notifyDataSetChanged();
+                reminderAdapter.addList(new Reminder(txtReminder.getText().toString(), txtDate.getText().toString()));
+
+                reminderAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(reminderAdapter != null){
+            reminderAdapter.notifyDataSetChanged();
+        }
+
     }
 }
