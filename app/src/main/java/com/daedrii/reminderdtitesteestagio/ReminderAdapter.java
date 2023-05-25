@@ -6,7 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.text.ParseException;
@@ -41,7 +44,7 @@ public class ReminderAdapter extends BaseExpandableListAdapter {
 
         addList(new Reminder("Colocar ração", "25/05/2023"));
         addList(new Reminder("Limpar caixa de areia", "24/05/2023"));
-        addList(new Reminder("Comer a tata de 4", "13/05/2023"));
+        addList(new Reminder("Limpar a janela", "13/05/2023"));
 
         dateList = new HashMap<>();
         for(ReminderGroup group: reminderGroups){
@@ -134,7 +137,7 @@ public class ReminderAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 
     @Override
@@ -151,6 +154,15 @@ public class ReminderAdapter extends BaseExpandableListAdapter {
         MaterialTextView listTitleTextView = convertView.findViewById(R.id.list_title);
         listTitleTextView.setText(listTitle);
 
+        //Verificação da lista de reminders para uma determinada data estar vazia
+        ArrayList<Reminder> reminders = dateList.get(listTitle);
+        if(reminders.isEmpty() || reminders == null){
+            listTitleTextView.setVisibility(View.GONE);
+        }else{
+            listTitleTextView.setVisibility(View.VISIBLE);
+
+        }
+
         return convertView;
     }
 
@@ -166,10 +178,30 @@ public class ReminderAdapter extends BaseExpandableListAdapter {
 
         MaterialTextView lblReminder = convertView.findViewById(R.id.lbl_reminder);
         MaterialTextView lblDate = convertView.findViewById(R.id.lbl_date);
+        ImageButton lblDelete = convertView.findViewById(R.id.btn_delete);
 
         lblReminder.setText(actualReminder.getName());
         lblDate.setText(actualReminder.getDate());
 
+        //Obtem a posição do Reminder em relação à lista completa, considerando a ordenação
+        int absolutePosition = getAbsoluteChildPosition(groupPosition, childPosition);
+
+        lblDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Obtém a posição real do Reminder na lsita sem a ordenação
+                int realPosition = getRealChildPosition(absolutePosition);
+
+                ArrayList<Reminder> reminders = dateList.get(getGroup(groupPosition));
+                reminders.remove(realPosition);
+                if(reminders.isEmpty())
+                    reminderGroups.remove(getGroup(groupPosition));
+
+                notifyDataSetChanged();
+
+            }
+        });
 
         return convertView;
     }
@@ -177,5 +209,27 @@ public class ReminderAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
+    }
+
+    private int getAbsoluteChildPosition(int groupPosition, int childPosition) {
+        int absolutePosition = 0;
+
+        for(int i = 0; i < groupPosition; i++){
+            ArrayList<Reminder> reminders = dateList.get(dateList.keySet().toArray()[i]);
+            absolutePosition += reminders.size();
+        }
+
+        absolutePosition += childPosition;
+        return absolutePosition;
+    }
+
+    private int getRealChildPosition(int absolutePosition){
+        int groupPosition = 0;
+        int childPosition = absolutePosition;
+        while(groupPosition < dateList.keySet().size() && childPosition >= dateList.get(dateList.keySet().toArray()[groupPosition]).size()){
+            childPosition -= dateList.get(dateList.keySet().toArray()[groupPosition]).size();
+            groupPosition++;
+        }
+        return childPosition;
     }
 }
