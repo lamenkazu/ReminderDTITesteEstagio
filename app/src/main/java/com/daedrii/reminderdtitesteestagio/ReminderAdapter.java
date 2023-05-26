@@ -1,85 +1,75 @@
 package com.daedrii.reminderdtitesteestagio;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.Map;
 
+
+//Adaptador dos Lembretes utilizado para a exibição dos mesmos na MainActivity
 public class ReminderAdapter extends BaseExpandableListAdapter {
 
+    private ReminderDataManager dataManager;
     private static ArrayList<ReminderGroup> reminderGroups;
-
     private static HashMap<String, ArrayList<Reminder>> dateList;
-    private static ArrayList<Reminder> reminders;
     private Context context;
+    private ArrayList<Reminder> reminderList;
 
-    public ReminderAdapter(Context context){
+    public ReminderAdapter(Context context, ReminderDataManager dataManager){
         this.context = context;
-        reminders = new ArrayList<>();
-        dateList = new HashMap<String, ArrayList<Reminder>>();
+        this.dataManager = dataManager;
 
-        loadList();
-
-    }
-
-    public void loadList(){
-
-        reminderGroups = new ArrayList<>();
-
-        addList(new Reminder("Colocar ração", "25/05/2023"));
-        addList(new Reminder("Limpar caixa de areia", "24/05/2023"));
-        addList(new Reminder("Limpar a janela", "13/05/2023"));
-
-        dateList = new HashMap<>();
-        for(ReminderGroup group: reminderGroups){
-            String date = group.getDate();
-            ArrayList<Reminder> reminders = group.getReminders();
-            dateList.put(date, reminders);
-        }
+        this.reminderList = new ArrayList<>();
+        this.dateList = new HashMap<String, ArrayList<Reminder>>();
+        this.reminderGroups = new ArrayList<>();
 
     }
 
-    public static void addList(Reminder newReminder){
-        String date = newReminder.getDate();
+    //Define os dados do lembrete
+    public void setData(ArrayList<Reminder> data) {
 
-        ReminderGroup reminderGroup = null;
-        for(ReminderGroup group: reminderGroups){
-            if(group.getDate().equals(date)){
-                reminderGroup = group;
-                break;
+        // Limpa as listas existentes
+        this.reminderGroups.clear();
+        this.dateList.clear();
+        this.reminderList.clear();
+
+        this.reminderList.addAll(data);
+
+
+        // Agrupa os lembretes por data
+        for (Reminder reminder : reminderList) {
+            String date = reminder.getDate();
+            ArrayList<Reminder> reminders = this.dateList.get(date);
+            if (reminders == null) {
+                reminders = new ArrayList<>();
+                this.dateList.put(date, reminders);
             }
+            reminders.add(reminder);
         }
 
-        if (reminderGroup == null) {
-            reminderGroup = new ReminderGroup(date);
-            reminderGroups.add(reminderGroup);
+        // Cria os grupos a partir dos dados da lista dateList
+        for (Map.Entry<String, ArrayList<Reminder>> entry : this.dateList.entrySet()) {
+            String date = entry.getKey();
+            ArrayList<Reminder> reminders = entry.getValue();
+            ReminderGroup group = new ReminderGroup(date, reminders);
+            this.reminderGroups.add(group);
         }
-
-        if(reminderGroup.getReminders() == null){
-            reminderGroup.setReminders(new ArrayList<>());
-        }
-
-        reminderGroup.getReminders().add(newReminder);
-
-        //Atualiza o dateList com o novo grupo
-        dateList.put(date, reminderGroup.getReminders());
     }
+
+
+    public void updateData(){
+
+        ReminderSorter.sortReminderGroups(this.reminderGroups);
+
+        notifyDataSetChanged();
+    }
+
 
 
     @Override
@@ -89,40 +79,21 @@ public class ReminderAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        String date = (String) getGroup(groupPosition);
-        ArrayList<Reminder> reminders = dateList.get(date);
-        return (reminders != null) ? reminders.size() : 0;
+        ReminderGroup group = this.reminderGroups.get(groupPosition);
+        return group.getReminders().size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
 
-        ArrayList<String> dates = new ArrayList<>(this.dateList.keySet());
-        Collections.sort(dates, new Comparator<String>() {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-
-            @Override
-            public int compare(String date1, String date2) {
-                try {
-                    Date d1 = dateFormat.parse(date1);
-                    Date d2 = dateFormat.parse(date2);
-                    return d1.compareTo(d2);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                return 0;
-            }
-        });
-
-        return dates.get(groupPosition);
+        ReminderGroup group = this.reminderGroups.get(groupPosition);
+        return group.getDate();
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        String date = (String) getGroup(groupPosition);
-        ArrayList<Reminder> reminders = dateList.get(date);
-        return (reminders != null && reminders.size() > childPosition) ? reminders.get(childPosition) : null;
-
+        ReminderGroup group = this.reminderGroups.get(groupPosition);
+        return group.getReminders().get(childPosition);
     }
 
     @Override
@@ -140,68 +111,69 @@ public class ReminderAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
+    //Agrupamento feito por titulos, cujo qual está setado como a própria data no formato dd/MM/yyyy.
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        String listTitle = (String) getGroup(groupPosition);
+    public View getGroupView(int groupPosition,
+                             boolean isExpanded,
+                             View convertView,
+                             ViewGroup parent) {
 
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) this.context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
             convertView = inflater.inflate(R.layout.date_list, null);
-
         }
+
+        String listTitle = (String) getGroup(groupPosition);
         MaterialTextView listTitleTextView = convertView.findViewById(R.id.list_title);
         listTitleTextView.setText(listTitle);
 
-        //Verificação da lista de reminders para uma determinada data estar vazia
-        ArrayList<Reminder> reminders = dateList.get(listTitle);
-        if(reminders.isEmpty() || reminders == null){
+        //Verificação da lista de reminders para uma determinada data estar vazia, caso esteja, não a mostra mais.
+        ArrayList<Reminder> reminders = this.dateList.get(listTitle);
+        if(reminders.isEmpty() || reminders == null)
             listTitleTextView.setVisibility(View.GONE);
-        }else{
+        else
             listTitleTextView.setVisibility(View.VISIBLE);
 
-        }
 
         return convertView;
     }
 
+    //Itens da lista, que são Reminders
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-
-        Reminder actualReminder = (Reminder) getChild(groupPosition, childPosition);
+    public View getChildView(int groupPosition,
+                             int childPosition,
+                             boolean isLastChild,
+                             View convertView, ViewGroup parent) {
 
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.item_list_reminder, null);
+            ReminderViewHolder viewHolder = new ReminderViewHolder(convertView,
+                                                            ReminderAdapter.this,
+                                                                   groupPosition, childPosition);
+            convertView.setTag(viewHolder);
         }
 
-        MaterialTextView lblReminder = convertView.findViewById(R.id.lbl_reminder);
-        MaterialTextView lblDate = convertView.findViewById(R.id.lbl_date);
-        ImageButton lblDelete = convertView.findViewById(R.id.btn_delete);
+        Reminder actualReminder = (Reminder) getChild(groupPosition, childPosition);
 
-        lblReminder.setText(actualReminder.getName());
-        lblDate.setText(actualReminder.getDate());
+        ReminderViewHolder viewHolder = (ReminderViewHolder) convertView.getTag();
+        viewHolder.updatePosition(groupPosition, childPosition);
+        viewHolder.bind(actualReminder);
 
-        //Obtem a posição do Reminder em relação à lista completa, considerando a ordenação
-        int absolutePosition = getAbsoluteChildPosition(groupPosition, childPosition);
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.item_list_reminder, null);
+            viewHolder = new ReminderViewHolder(convertView,ReminderAdapter.this,
+                                                groupPosition, childPosition);
+            convertView.setTag(viewHolder);
 
-        lblDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        } else {
+            viewHolder = (ReminderViewHolder) convertView.getTag();
+            viewHolder.updatePosition(groupPosition, childPosition);
+        }
 
-                //Obtém a posição real do Reminder na lsita sem a ordenação
-                int realPosition = getRealChildPosition(absolutePosition);
-
-                ArrayList<Reminder> reminders = dateList.get(getGroup(groupPosition));
-                reminders.remove(realPosition);
-                if(reminders.isEmpty())
-                    reminderGroups.remove(getGroup(groupPosition));
-
-                notifyDataSetChanged();
-
-            }
-        });
+        viewHolder.bind(actualReminder);
 
         return convertView;
     }
@@ -211,25 +183,13 @@ public class ReminderAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    private int getAbsoluteChildPosition(int groupPosition, int childPosition) {
-        int absolutePosition = 0;
-
-        for(int i = 0; i < groupPosition; i++){
-            ArrayList<Reminder> reminders = dateList.get(dateList.keySet().toArray()[i]);
-            absolutePosition += reminders.size();
-        }
-
-        absolutePosition += childPosition;
-        return absolutePosition;
+    public static HashMap<String, ArrayList<Reminder>> getDateList() {
+        return dateList;
     }
 
-    private int getRealChildPosition(int absolutePosition){
-        int groupPosition = 0;
-        int childPosition = absolutePosition;
-        while(groupPosition < dateList.keySet().size() && childPosition >= dateList.get(dateList.keySet().toArray()[groupPosition]).size()){
-            childPosition -= dateList.get(dateList.keySet().toArray()[groupPosition]).size();
-            groupPosition++;
-        }
-        return childPosition;
+    public ArrayList<Reminder> getReminderList(int groupPosition) {
+        ReminderGroup group = this.reminderGroups.get(groupPosition);
+        return group.getReminders();
     }
+
 }
