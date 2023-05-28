@@ -18,11 +18,11 @@ porém com boa qualidade de código, boas práticas de desenvolvimento, e com a 
 
 ## Critérios cumpridos
 Desenvolvi um código Android Mobile em Java separando a responsabilidade das classes em padrão de arquitetura MVC, criando
-bons nomes de variáveis e métodos, aplicando orientação à objetos. 
+bons nomes de variáveis e métodos, aplicando orientação à objetos.
 No entanto, há pontos a destacar que poderiam ter sido melhores implementados:
-1- Moduralização da funcionalidade de remover um lembrete da lista. - Toda vez que um ítem vai ser removido, é preciso criar a funcionalidade de novo, sendo mais simples criar um método
-2- A implementação do Design Pattern Singleton para as estruturas de dados que definem as listas (DateList, ReminderGroup, Reminder)
-3- Melhor modularização da MainActivity, separando melhor as responsabilidades.
+#### 1- Moduralização da funcionalidade de remover um lembrete da lista. - Toda vez que um ítem vai ser removido, é preciso criar a funcionalidade de novo, sendo mais simples criar um método
+#### 2- A implementação do Design Pattern Singleton para as estruturas de dados que definem as listas (DateList, ReminderGroup, Reminder)
+#### 3- Melhor modularização da MainActivity, separando melhor as responsabilidades.
 
 Utilização de XML semântico para construção da interface, utilizando RelativeLayout e MaterialDesignComponents
 
