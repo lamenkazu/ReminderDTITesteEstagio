@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         // Carrega a lista de lembretes predefinidos
-//        dataManager.loadList();
+        dataManager.loadList();
 
 
         // Atualiza os dados do adapter apenas se houver dados no ReminderDataManager
