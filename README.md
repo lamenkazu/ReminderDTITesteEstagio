@@ -6,11 +6,11 @@
 
 ## Instruções para executar a aplicação
 É possível simplesmente fazer um fork do projeto e abrí-lo no Android Studio e dar play no módulo app, respeitando os critérios de estrutura do projeto:
-Versão Gradle: 7.3.1
-API minima do dispositivo: 29 (Android 10)
-compileSDK: 33 (Tiramisu)
-targetSDK: 32 (Android 12L)
-no entanto, aqui no github está disponibilizado o APK da aplicação para ser instalada em qualquer dispositivo android que seja superior ao android 10.
+#### Versão Gradle: 7.3.1
+#### API minima do dispositivo: 29 (Android 10)
+#### compileSDK: 33 (Tiramisu)
+#### targetSDK: 32 (Android 12L)
+No entanto, aqui no github está disponibilizado o APK da aplicação para ser instalada em qualquer dispositivo android que seja superior ao android 10.
 
 ## Premissas assumidas
 Projetar um sistema de uma estrutura de dados de lembretes em um aplicativo mobile com CRUD simples, 
@@ -48,6 +48,7 @@ Minha terceira decisão foi inserir a **implementação da remoção de um item 
 porém houve um bug causado pela ordenação dos itens por data, atrapalhando a remoção.
 Foi necessário pesquisar uma forma de resolver, porém futuramente isso se mostrou desnecessário após a correção de utilização das estruturas, onde corrigiu a posição dos itens automaticamente.
 
+
 Minha quarta decisão foi **implementar a refatoração do meu código**, foi onde meus problemas começaram.
 Primeiro separei a funcionalidade de ordenação de um lembrete em uma classe exclusíva.
 Depois, separei as responsabilidades de data para uma classe exclusiva, ReminderDataManager, responsável por lidar com as estruturas de dados implementadas.
@@ -60,7 +61,7 @@ Por fim, minha ultima decisão de projeto foi **a implementação de testes** no
 Nesse momento, eu precisei optar em se eu faria uma API, ou implementaria meus testes.
 Eu sabia que poderia implementar uma API, pois é algo que eu já sabia fazer, e já tenho em alguns projetos, mas pensei que fazer uma API e não entregar testes de nenhum dos dois seria o pior cenário.
 nos meus cursos, por incrível que pareça, estou exatamente no momento em que eu devia estar estudando sobre testes,
-![img.png](img.png)
+![b3e532ae-87b4-46be-9cb8-a0b008a2526a](https://github.com/lamenkazu/ReminderDTITesteEstagio/assets/23318318/e63280c0-522b-4844-9d7f-eec998a47497)
 mas apesar de fazer testes em algumas atividades, percebi o quão diferente é criar testes pra um cenário real em que eu mesmo estou desenvolvendo. Eu sabia que tomaria um tempo enorme fazer isso, 
 então tive que optar entre os dois pra ser capaz de entregar algo bem feito, no lugar de algo completo e feito de qualquer forma.
 
