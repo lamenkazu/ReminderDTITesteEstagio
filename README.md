@@ -4,7 +4,7 @@
 
 **Linguagem desenvolvida: Java - Aplicação mobile Android**
 
-##Instruções para executar a aplicação
+## Instruções para executar a aplicação
 É possível simplesmente fazer um fork do projeto e abrí-lo no Android Studio e dar play no módulo app, respeitando os critérios de estrutura do projeto:
 Versão Gradle: 7.3.1
 API minima do dispositivo: 29 (Android 10)
@@ -29,14 +29,14 @@ Utilização de XML semântico para construção da interface, utilizando Relati
 Testes automatizados unitários e instrumentais para todos os métodos do projeto, salvo alguns getters e setters de variáveis.
 
 
-##Decisões de Projeto
+## Decisões de Projeto
 A melhor forma de averiguar minhas decisões é por meio dos meus Commit feitos através do Git.
 
 Minha primeira decisão foi **implementar a interface inicial**, 
 implementando apenas 3 classes:
-####MainActivity: Responsável pela captura das ações do usuário durante o uso da aplicação ;
-####Reminder: Classe modelo para definir o que seria um Lembrete ;
-####ReminderAdapter: Adaptador que lida com a mudança do estado da lista de lembretes com a exibição na tela;
+#### MainActivity: Responsável pela captura das ações do usuário durante o uso da aplicação ;
+#### Reminder: Classe modelo para definir o que seria um Lembrete ;
+#### ReminderAdapter: Adaptador que lida com a mudança do estado da lista de lembretes com a exibição na tela;
 Nesse momento, imaginei que talvez o padrão MVVM pudesse ser mais interessante por como foi modelada a estrutura inicial, porém mais adiante o MVC pareceu mais adequado.
 Não tive nenhum problema nessa parte do processo, sendo completada no começo do meu primeiro dia de trabalho.
 
@@ -73,7 +73,7 @@ Não imaginei que isso fosse engrandecer tanto o meu projeto, me fez identificar
 Com certeza valeu a pena optar por implementar esses testes;
 
 
-##Feedback do processo
+## Feedback do processo
 Um grande problema do programador que está começando é a falta de projetos,e essa foi uma ótima experiência que eu tive. 
 A grande diferença dela para meus outros projetos,foi o primeiro em que eu tive um prazo para completar, 
 mas como sempre tinha conteúdo novo a buscar aprender, isso é algo que enriquece muito, simplesmente participar do processo, me torna um desenvolvedor melhor.
