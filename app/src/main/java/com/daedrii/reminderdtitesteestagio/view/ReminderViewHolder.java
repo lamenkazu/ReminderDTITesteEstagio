@@ -41,15 +41,22 @@ public class ReminderViewHolder extends RecyclerView.ViewHolder{
             @Override
             public void onClick(View v) {
 
-                ArrayList<Reminder> remindersInAGroup = adapter.getRemindersInAGroup(groupPosition);
-
-                Reminder removedReminder = remindersInAGroup.remove(childPosition); //Remove reminder do grupo
-                adapter.getDataManager().getReminders().remove(removedReminder); //Remove Reminder da lista de lembretes
-
-                adapter.notifyDataSetChanged();
+                removeReminder(groupPosition, childPosition);
 
             }
         });
+    }
+
+    //Remove um lembrete
+    public Reminder removeReminder(int groupPosition, int childPosition){
+        ArrayList<Reminder> remindersInAGroup = adapter.getRemindersInAGroup(groupPosition);
+
+        Reminder removedReminder = remindersInAGroup.remove(childPosition); //Remove reminder do grupo
+        adapter.getDataManager().getReminders().remove(removedReminder); //Remove Reminder da lista de lembretes
+
+        adapter.notifyDataSetChanged();
+
+        return removedReminder;
     }
 
     public void updatePosition(int groupPosition, int childPosition) {

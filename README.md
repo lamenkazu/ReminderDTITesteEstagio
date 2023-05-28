@@ -20,10 +20,9 @@ porém com boa qualidade de código, boas práticas de desenvolvimento, e com a 
 Desenvolvi um código Android Mobile em Java separando a responsabilidade das classes em padrão de arquitetura MVC, criando
 bons nomes de variáveis e métodos, aplicando orientação à objetos.
 No entanto, há pontos a destacar que poderiam ter sido melhores implementados:
-#### 1- Moduralização da funcionalidade de remover um lembrete da lista. - Toda vez que um ítem vai ser removido, é preciso criar a funcionalidade de novo, sendo mais simples criar um método
-#### 2- A implementação do Design Pattern Singleton para as estruturas de dados que definem as listas (DateList, ReminderGroup, Reminder)
-#### 3- Melhor modularização da MainActivity, separando melhor as responsabilidades.
-
+#### 1- A implementação do Design Pattern Singleton para as estruturas de dados que definem as listas (DateList, ReminderGroup, Reminder)
+#### 2- Melhor modularização da MainActivity, separando melhor as responsabilidades.
+#### 3 - Utilização de Persistencia de Dados e uma API.
 Utilização de XML semântico para construção da interface, utilizando RelativeLayout e MaterialDesignComponents
 
 Testes automatizados unitários e instrumentais para todos os métodos do projeto, salvo alguns getters e setters de variáveis.
@@ -61,7 +60,7 @@ Por fim, minha ultima decisão de projeto foi **a implementação de testes** no
 Nesse momento, eu precisei optar em se eu faria uma API, ou implementaria meus testes.
 Eu sabia que poderia implementar uma API, pois é algo que eu já sabia fazer, e já tenho em alguns projetos, mas pensei que fazer uma API e não entregar testes de nenhum dos dois seria o pior cenário.
 nos meus cursos, por incrível que pareça, estou exatamente no momento em que eu devia estar estudando sobre testes,
-![b3e532ae-87b4-46be-9cb8-a0b008a2526a](https://github.com/lamenkazu/ReminderDTITesteEstagio/assets/23318318/e63280c0-522b-4844-9d7f-eec998a47497)
+#### ![b3e532ae-87b4-46be-9cb8-a0b008a2526a](https://github.com/lamenkazu/ReminderDTITesteEstagio/assets/23318318/e63280c0-522b-4844-9d7f-eec998a47497)
 mas apesar de fazer testes em algumas atividades, percebi o quão diferente é criar testes pra um cenário real em que eu mesmo estou desenvolvendo. Eu sabia que tomaria um tempo enorme fazer isso, 
 então tive que optar entre os dois pra ser capaz de entregar algo bem feito, no lugar de algo completo e feito de qualquer forma.
 

@@ -58,7 +58,7 @@ public class ReminderViewHolderInstrumentedTest {
         seedData.clear();
 
         ArrayList<Reminder> reminders = new ArrayList<>();
-        reminders.add(new Reminder(TXT_REMINDER1, TXT_DATE1));
+//        reminders.add(new Reminder(TXT_REMINDER1, TXT_DATE1));
         reminders.add(new Reminder(TXT_REMINDER, TXT_DATE));
         adapterTest.setData(reminders);
     }
@@ -104,8 +104,22 @@ public class ReminderViewHolderInstrumentedTest {
 
         //Verifica se o lembrete removido não está mais presente na lista do grupo
         assertFalse(remindersAfterRemotion.contains(adapterTest.getReminders().get(0)));
+    }
 
+    @Test
+    public void ShouldPerformRemotionOfAReminder(){
+        setSeedData();
 
+        View convertView = inflater.inflate(R.layout.item_list_reminder, null);
+        View view = adapterTest.getChildView(groupPosition, childPosition, false, convertView, parent);
+
+        ReminderViewHolder viewHolderTest = (ReminderViewHolder) view.getTag();
+
+        Reminder removedRemidner = viewHolderTest.removeReminder(groupPosition, childPosition);
+
+        //Verifica se o lembrete removido não está mais presente na lista do grupo
+        ArrayList<Reminder> remindersInAGroup = adapterTest.getRemindersInAGroup(0);
+        assertFalse(remindersInAGroup.contains(removedRemidner));
     }
 
 }
