@@ -1,4 +1,4 @@
-package com.daedrii.reminderdtitesteestagio;
+package com.daedrii.reminderdtitesteestagio.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,12 +13,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import com.daedrii.reminderdtitesteestagio.model.exceptions.EmptyFieldException;
+import com.daedrii.reminderdtitesteestagio.model.exceptions.InvalidDateException;
+import com.daedrii.reminderdtitesteestagio.R;
+import com.daedrii.reminderdtitesteestagio.controller.ReminderAdapter;
+import com.daedrii.reminderdtitesteestagio.controller.ReminderDataManager;
+import com.daedrii.reminderdtitesteestagio.model.Reminder;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
 

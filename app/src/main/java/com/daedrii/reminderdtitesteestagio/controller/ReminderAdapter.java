@@ -1,10 +1,15 @@
-package com.daedrii.reminderdtitesteestagio;
+package com.daedrii.reminderdtitesteestagio.controller;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+
+import com.daedrii.reminderdtitesteestagio.R;
+import com.daedrii.reminderdtitesteestagio.model.Reminder;
+import com.daedrii.reminderdtitesteestagio.model.ReminderGroup;
+import com.daedrii.reminderdtitesteestagio.view.ReminderViewHolder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;

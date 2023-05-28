@@ -1,4 +1,4 @@
-package com.daedrii.reminderdtitesteestagio;
+package com.daedrii.reminderdtitesteestagio.model;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,10 @@
-package com.daedrii.reminderdtitesteestagio;
+package com.daedrii.reminderdtitesteestagio.controller;
 
 import static org.junit.Assert.*;
+
+import com.daedrii.reminderdtitesteestagio.controller.ReminderSorter;
+import com.daedrii.reminderdtitesteestagio.model.ReminderGroup;
+
 import org.junit.Test;
 
 import java.text.ParseException;

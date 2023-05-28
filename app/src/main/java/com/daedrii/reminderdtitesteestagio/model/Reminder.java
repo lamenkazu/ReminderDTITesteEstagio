@@ -1,4 +1,4 @@
-package com.daedrii.reminderdtitesteestagio;
+package com.daedrii.reminderdtitesteestagio.model;
 
 //Classe simples para definir uma Lembrança.
 public class Reminder {

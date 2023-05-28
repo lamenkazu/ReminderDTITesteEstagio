@@ -1,4 +1,6 @@
-package com.daedrii.reminderdtitesteestagio;
+package com.daedrii.reminderdtitesteestagio.controller;
+
+import com.daedrii.reminderdtitesteestagio.model.ReminderGroup;
 
 import java.util.ArrayList;
 

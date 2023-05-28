@@ -1,4 +1,4 @@
-package com.daedrii.reminderdtitesteestagio;
+package com.daedrii.reminderdtitesteestagio.view;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,12 @@ import android.widget.LinearLayout;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.daedrii.reminderdtitesteestagio.R;
+import com.daedrii.reminderdtitesteestagio.controller.ReminderAdapter;
+import com.daedrii.reminderdtitesteestagio.controller.ReminderDataManager;
+import com.daedrii.reminderdtitesteestagio.model.Reminder;
+import com.daedrii.reminderdtitesteestagio.view.ReminderViewHolder;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +25,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 @RunWith(AndroidJUnit4.class)
 public class ReminderViewHolderInstrumentedTest {
@@ -72,7 +77,7 @@ public class ReminderViewHolderInstrumentedTest {
         viewHolderTest.bind(adapterTest.getReminders().get(0));
         String actualText = viewHolderTest.getLblReminder().getText().toString(); //Pega o nome do lembrete definido
 
-        assertEquals(TXT_REMINDER, actualText); //Verifica se o texto exibido corresponde ao nome definido.
+        assertEquals(TXT_REMINDER1, actualText); //Verifica se o texto exibido corresponde ao nome definido.
 
     }
 

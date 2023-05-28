@@ -1,6 +1,7 @@
-package com.daedrii.reminderdtitesteestagio;
+package com.daedrii.reminderdtitesteestagio.view;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -15,6 +16,9 @@ import static androidx.test.espresso.action.ViewActions.*;
 import static androidx.test.espresso.assertion.ViewAssertions.*;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
 
+import com.daedrii.reminderdtitesteestagio.R;
+import com.daedrii.reminderdtitesteestagio.model.Reminder;
+import com.daedrii.reminderdtitesteestagio.view.MainActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 
@@ -58,7 +62,7 @@ public class MainActivityInstrumentedTest {
                 .check(matches(isDisplayed())); //checa
 
         //Remove o lembrete inserido da lista
-        onView(withId(R.id.btn_delete))
+        onView(ViewMatchers.withId(R.id.btn_delete))
                 .perform(click());
 
         //Cria um novo Reminder pra lista

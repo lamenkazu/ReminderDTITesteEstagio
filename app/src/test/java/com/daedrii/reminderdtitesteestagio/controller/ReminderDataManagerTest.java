@@ -1,7 +1,14 @@
-package com.daedrii.reminderdtitesteestagio;
+package com.daedrii.reminderdtitesteestagio.controller;
 
 
 import static org.junit.Assert.*;
+
+import com.daedrii.reminderdtitesteestagio.controller.ReminderDataManager;
+import com.daedrii.reminderdtitesteestagio.model.Reminder;
+import com.daedrii.reminderdtitesteestagio.model.ReminderGroup;
+import com.daedrii.reminderdtitesteestagio.model.exceptions.EmptyFieldException;
+import com.daedrii.reminderdtitesteestagio.model.exceptions.InvalidDateException;
+
 import org.junit.Test;
 
 import java.util.ArrayList;

@@ -1,14 +1,10 @@
-package com.daedrii.reminderdtitesteestagio;
+package com.daedrii.reminderdtitesteestagio.controller;
 
 import static org.junit.Assert.*;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
-import com.google.android.material.textview.MaterialTextView;
+import com.daedrii.reminderdtitesteestagio.controller.ReminderAdapter;
+import com.daedrii.reminderdtitesteestagio.model.Reminder;
+import com.daedrii.reminderdtitesteestagio.model.ReminderGroup;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -17,7 +13,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 public class ReminderAdapterTest {

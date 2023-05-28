@@ -1,16 +1,20 @@
-package com.daedrii.reminderdtitesteestagio;
+package com.daedrii.reminderdtitesteestagio.controller;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.daedrii.reminderdtitesteestagio.model.Reminder;
+import com.daedrii.reminderdtitesteestagio.model.ReminderGroup;
+import com.daedrii.reminderdtitesteestagio.model.exceptions.EmptyFieldException;
+import com.daedrii.reminderdtitesteestagio.model.exceptions.InvalidDateException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 public class ReminderDataManager {
 
@@ -39,7 +43,7 @@ public class ReminderDataManager {
     }
 
     //Cria um novo dado nas 3 estruturas de dados
-    public void addList(@NonNull Reminder newReminder) throws EmptyFieldException, InvalidDateException{
+    public void addList(@NonNull Reminder newReminder) throws EmptyFieldException, InvalidDateException {
 
         if(newReminder.getDate().equals("") || newReminder.getName().equals("")){
             throw new EmptyFieldException("Os campos não podem estar vazios para a inserção.");

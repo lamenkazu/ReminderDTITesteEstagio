@@ -1,16 +1,17 @@
-package com.daedrii.reminderdtitesteestagio;
+package com.daedrii.reminderdtitesteestagio.view;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.daedrii.reminderdtitesteestagio.R;
+import com.daedrii.reminderdtitesteestagio.controller.ReminderAdapter;
+import com.daedrii.reminderdtitesteestagio.model.Reminder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 //Classe que lida com is componentes do item reminder
 public class ReminderViewHolder extends RecyclerView.ViewHolder{

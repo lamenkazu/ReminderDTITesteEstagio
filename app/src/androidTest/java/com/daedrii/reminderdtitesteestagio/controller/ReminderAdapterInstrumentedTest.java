@@ -1,4 +1,4 @@
-package com.daedrii.reminderdtitesteestagio;
+package com.daedrii.reminderdtitesteestagio.controller;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,13 @@ import android.widget.LinearLayout;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.daedrii.reminderdtitesteestagio.R;
+import com.daedrii.reminderdtitesteestagio.controller.ReminderAdapter;
+import com.daedrii.reminderdtitesteestagio.controller.ReminderDataManager;
+import com.daedrii.reminderdtitesteestagio.model.Reminder;
+import com.daedrii.reminderdtitesteestagio.model.exceptions.EmptyFieldException;
+import com.daedrii.reminderdtitesteestagio.model.exceptions.InvalidDateException;
+import com.daedrii.reminderdtitesteestagio.view.ReminderViewHolder;
 import com.google.android.material.textview.MaterialTextView;
 
 import org.junit.Before;
