@@ -18,17 +18,22 @@ public class ReminderAdapter extends BaseExpandableListAdapter {
     private ReminderDataManager dataManager;
     private static ArrayList<ReminderGroup> reminderGroups;
     private static HashMap<String, ArrayList<Reminder>> dateList;
+    private static ArrayList<Reminder> reminders;
+
     private Context context;
-    private ArrayList<Reminder> reminderList;
 
     public ReminderAdapter(Context context, ReminderDataManager dataManager){
         this.context = context;
         this.dataManager = dataManager;
-
-        this.reminderList = new ArrayList<>();
+        this.reminders = new ArrayList<>();
         this.dateList = new HashMap<String, ArrayList<Reminder>>();
         this.reminderGroups = new ArrayList<>();
 
+    }
+
+    public ReminderAdapter() {
+        this.dateList = new HashMap<String, ArrayList<Reminder>>();
+        this.reminderGroups = new ArrayList<>();
     }
 
     //Define os dados do lembrete
@@ -37,13 +42,12 @@ public class ReminderAdapter extends BaseExpandableListAdapter {
         // Limpa as listas existentes
         this.reminderGroups.clear();
         this.dateList.clear();
-        this.reminderList.clear();
+        this.reminders.clear();
 
-        this.reminderList.addAll(data);
-
+        this.reminders.addAll(data);
 
         // Agrupa os lembretes por data
-        for (Reminder reminder : reminderList) {
+        for (Reminder reminder : data) {
             String date = reminder.getDate();
             ArrayList<Reminder> reminders = this.dateList.get(date);
             if (reminders == null) {
@@ -62,14 +66,11 @@ public class ReminderAdapter extends BaseExpandableListAdapter {
         }
     }
 
-
-    public void updateData(){
+    public void orderData(){
 
         ReminderSorter.sortReminderGroups(this.reminderGroups);
 
-        notifyDataSetChanged();
     }
-
 
 
     @Override
@@ -146,33 +147,23 @@ public class ReminderAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild,
                              View convertView, ViewGroup parent) {
 
-        if(convertView == null) {
+        ReminderViewHolder viewHolder;
+
+        if(convertView == null || convertView.getTag() == null) {
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.item_list_reminder, null);
-            ReminderViewHolder viewHolder = new ReminderViewHolder(convertView,
+            viewHolder = new ReminderViewHolder(convertView,
                                                             ReminderAdapter.this,
                                                                    groupPosition, childPosition);
             convertView.setTag(viewHolder);
-        }
-
-        Reminder actualReminder = (Reminder) getChild(groupPosition, childPosition);
-
-        ReminderViewHolder viewHolder = (ReminderViewHolder) convertView.getTag();
-        viewHolder.updatePosition(groupPosition, childPosition);
-        viewHolder.bind(actualReminder);
-
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.item_list_reminder, null);
-            viewHolder = new ReminderViewHolder(convertView,ReminderAdapter.this,
-                                                groupPosition, childPosition);
-            convertView.setTag(viewHolder);
-
-        } else {
+        }else{
             viewHolder = (ReminderViewHolder) convertView.getTag();
             viewHolder.updatePosition(groupPosition, childPosition);
         }
 
+        Reminder actualReminder = (Reminder) getChild(groupPosition, childPosition);
+
+        viewHolder = (ReminderViewHolder) convertView.getTag();
         viewHolder.bind(actualReminder);
 
         return convertView;
@@ -187,9 +178,43 @@ public class ReminderAdapter extends BaseExpandableListAdapter {
         return dateList;
     }
 
-    public ArrayList<Reminder> getReminderList(int groupPosition) {
+    public ArrayList<Reminder> getRemindersInAGroup(int groupPosition) {
         ReminderGroup group = this.reminderGroups.get(groupPosition);
         return group.getReminders();
     }
 
+
+
+    public ReminderDataManager getDataManager() {
+        return dataManager;
+    }
+
+    public static ArrayList<ReminderGroup> getReminderGroups() {
+        return reminderGroups;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+
+    public void setDataManager(ReminderDataManager dataManager) {
+        this.dataManager = dataManager;
+    }
+
+    public static void setReminderGroups(ArrayList<ReminderGroup> reminderGroups) {
+        ReminderAdapter.reminderGroups = reminderGroups;
+    }
+
+    public static void setDateList(HashMap<String, ArrayList<Reminder>> dateList) {
+        ReminderAdapter.dateList = dateList;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public static ArrayList<Reminder> getReminders() {
+        return reminders;
+    }
 }

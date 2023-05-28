@@ -2,15 +2,19 @@ package com.daedrii.reminderdtitesteestagio;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ReminderDataManager {
 
+    private Boolean isLoaded;
     private ArrayList<ReminderGroup> reminderGroups;
     private ArrayList<Reminder> reminders;
     private HashMap<String, ArrayList<Reminder>> dateList;
@@ -20,31 +24,22 @@ public class ReminderDataManager {
         this.reminderGroups = new ArrayList<>(); //Lista de lembretes de uma data específica -  Datas 1-N Lembretes
         this.reminders = new ArrayList<>(); //Lista de Lembretes
         this.dateList = new HashMap<>(); // Lista de datas
+        this.isLoaded = false;
     }
 
-    //Seed para uma nova Lista para testes de implementação
-    public void loadList()  {
-        this.reminders.clear();
-        this.reminderGroups.clear();
-        this.dateList.clear();
-
-
-        Date reference = new Date();
-
-        try {
-            addList(new Reminder("Colocar ração", "29/05/2023" ));
-            addList(new Reminder("Limpar caixa de areia", "30/05/2023"));
-            addList(new Reminder("Aniversario da Taís", "07/06/2023"));
-        } catch (EmptyFieldException e) {
-            Log.w("EmptyFieldException", e.getMessage());
-        }catch(InvalidDateException e){
-            Log.w("InvalidDateException", e.getMessage());
+    //Encontra um Agrupamento de Lembretes a partir de uma data, retorna nulo caso não encontra.
+    @Nullable
+    public ReminderGroup findReminderGroupByDate(String date) {
+        for (ReminderGroup group : this.reminderGroups) {
+            if (group.getDate().equals(date)) {
+                return group;
+            }
         }
-
+        return null;
     }
 
     //Cria um novo dado nas 3 estruturas de dados
-    public void addList(Reminder newReminder) throws EmptyFieldException, InvalidDateException{
+    public void addList(@NonNull Reminder newReminder) throws EmptyFieldException, InvalidDateException{
 
         if(newReminder.getDate().equals("") || newReminder.getName().equals("")){
             throw new EmptyFieldException("Os campos não podem estar vazios para a inserção.");
@@ -80,18 +75,28 @@ public class ReminderDataManager {
             reminders = new ArrayList<>();
             this.dateList.put(date, reminders);
         }
+        reminders.add(newReminder);
 
     }
 
-    //Encontra um Agrupamento de Lembretes a partir de uma data, retorna nulo caso não encontra.
-    //TODO (Tratar nulo - ou criar nova ThrowExcept)
-    private ReminderGroup findReminderGroupByDate(String date) {
-        for (ReminderGroup group : this.reminderGroups) {
-            if (group.getDate().equals(date)) {
-                return group;
-            }
+    //Seed para uma nova Lista para testes de implementação
+    public void loadList()  {
+        this.reminders = new ArrayList<>();
+        this.reminderGroups = new ArrayList<>();
+        this.dateList = new HashMap<>();
+
+        try {
+            addList(new Reminder("Aniversario da Taís", "07/06/2023"));
+            addList(new Reminder("Limpar caixa de areia", "30/05/2023"));
+            addList(new Reminder("Colocar ração", "29/05/2023" ));
+        } catch (EmptyFieldException e) {
+            Log.w("EmptyFieldException", e.getMessage());
+        }catch(InvalidDateException e){
+            Log.w("InvalidDateException", e.getMessage());
         }
-        return null;
+
+
+
     }
 
     public ArrayList<ReminderGroup> getReminderGroups() {
@@ -104,5 +109,17 @@ public class ReminderDataManager {
 
     public HashMap<String, ArrayList<Reminder>> getDateList() {
         return this.dateList;
+    }
+
+    public void setReminderGroups(ArrayList<ReminderGroup> reminderGroups) {
+        this.reminderGroups = reminderGroups;
+    }
+
+    public void setReminders(ArrayList<Reminder> reminders) {
+        this.reminders = reminders;
+    }
+
+    public void setDateList(HashMap<String, ArrayList<Reminder>> dateList) {
+        this.dateList = dateList;
     }
 }

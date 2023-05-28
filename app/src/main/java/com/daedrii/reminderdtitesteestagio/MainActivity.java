@@ -4,29 +4,31 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.BaseAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+
+    //Variaveis para validação de testes, não precisam ser modificadas para o funcionamento da feature,
+    // não se preocupar com essas variáveis.
+    private boolean createdReminder = false;
+    private boolean invalidDate = false;
+    //////////////////////////////////////////////////////////////////////////////////////////////////
 
     private ReminderAdapter reminderAdapter;
     private ReminderDataManager dataManager;
@@ -36,72 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton btnCreate;
     private ExpandableListView dateListView;
 
-
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        initComponents();
-
-        txtDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    if(!materialDatePicker.isAdded())
-                        materialDatePicker.show(getSupportFragmentManager(), "tag");
-                }
-            }
-        });
-
-        btnCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //Esconde o teclado do txtReminder quando clica no botao
-                InputMethodManager imm = (InputMethodManager) MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                imm.hideSoftInputFromWindow(txtReminder.getWindowToken(), 0);
-
-                try{
-                    String textReminder = txtReminder.getText().toString();
-                    String textDate = txtDate.getText().toString();
-
-                    dataManager.addList(new Reminder(textReminder, textDate));
-
-                    reminderAdapter.setData(dataManager.getReminders());
-
-                    reminderAdapter.updateData();
-                }catch(EmptyFieldException e){
-                    Log.w("EmptyFieldException", e.getMessage());
-                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                }catch (InvalidDateException e){
-                    Log.w("InvalidDateException", e.getMessage());
-                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Carrega a lista de lembretes predefinidos
-        dataManager.loadList();
-
-        // Atualiza os dados do adapter apenas se houver dados no ReminderDataManager
-        if (dataManager != null && !dataManager.getReminders().isEmpty()) {
-            reminderAdapter.setData(dataManager.getReminders());
-            reminderAdapter.updateData();
-            reminderAdapter.notifyDataSetChanged(); // Notifica o adapter para atualizar a exibição
-        }
-
-
-
-    }
 
     public void initComponents(){
         txtReminder = findViewById(R.id.txt_reminder);
@@ -130,5 +66,112 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+
+
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initComponents();
+
+        txtDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    if(!materialDatePicker.isAdded())
+                        materialDatePicker.show(getSupportFragmentManager(), "tag");
+                }
+            }
+        });
+
+        txtDate.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(!materialDatePicker.isAdded())
+                    materialDatePicker.show(getSupportFragmentManager(), "tag");
+                return false;
+            }
+        });
+
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Esconde o teclado do txtReminder quando clica no botao
+                InputMethodManager imm = (InputMethodManager) MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                imm.hideSoftInputFromWindow(txtReminder.getWindowToken(), 0);
+
+                try{
+                    String textReminder = txtReminder.getText().toString();
+                    String textDate = txtDate.getText().toString();
+
+                    dataManager.addList(new Reminder(textReminder, textDate));
+
+                    reminderAdapter.setData(dataManager.getReminders());
+
+                    createdReminder = true; //variável para teste
+
+                    reminderAdapter.orderData();
+                    reminderAdapter.notifyDataSetChanged();
+
+
+                }catch(EmptyFieldException e){
+                    Log.w("EmptyFieldException", e.getMessage());
+                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }catch (InvalidDateException e){
+                    Log.w("InvalidDateException", e.getMessage());
+                    invalidDate = true;
+                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+                txtReminder.setText("");
+                txtDate.setText("");
+
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Carrega a lista de lembretes predefinidos
+//        dataManager.loadList();
+
+
+        // Atualiza os dados do adapter apenas se houver dados no ReminderDataManager
+        if (dataManager != null && !dataManager.getReminders().isEmpty()) {
+            reminderAdapter.setData(dataManager.getReminders());
+            reminderAdapter.orderData();
+            reminderAdapter.notifyDataSetChanged(); // Notifica o adapter para atualizar a exibição
+        }
+    }
+
+    public ReminderAdapter getReminderAdapter() {
+        ExpandableListView expandableListView = findViewById(R.id.reminder_list);
+        ReminderAdapter expandableListAdapter = (ReminderAdapter) expandableListView.getExpandableListAdapter();
+
+        if (expandableListAdapter instanceof ReminderAdapter) {
+            return (ReminderAdapter) expandableListAdapter;
+        }
+
+        return null; //TODO tratar nulo ou criar exceção
+    }
+
+    public boolean isCreatedReminder() {
+        return createdReminder;
+    }
+
+    public boolean isInvalidDate() {
+        return invalidDate;
+    }
+
+    public ReminderDataManager getDataManager() {
+        return dataManager;
     }
 }
