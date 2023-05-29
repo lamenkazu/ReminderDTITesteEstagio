@@ -54,7 +54,7 @@ public class ReminderDataManager {
             Date date = sdf.parse(newReminder.getDate());
             long timestamp = date.getTime();
 
-            if(new Date(timestamp).before(new Date())){
+            if(new Date(timestamp).getTime() < (new Date()).getTime() - 97200000){ //Permite criar lembretes para hoje e em diante, mas não para dias anteriores. TODO criar metodo mais eficaz de verificação de datas
                 throw new InvalidDateException("A data informada precisa estar no futuro para ser inserida");
             }
 
