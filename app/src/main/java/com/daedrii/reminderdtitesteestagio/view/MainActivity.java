@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         //Criação do DatePicker
         materialDatePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Choose date to remind")
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds() - 10800000)
                 .build();
 
         materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
