@@ -125,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
                     reminderAdapter.orderData();
                     reminderAdapter.notifyDataSetChanged();
 
+                    txtReminder.setText("");
+                    txtDate.setText("");
+
 
                 }catch(EmptyFieldException e){
                     Log.w("EmptyFieldException", e.getMessage());
@@ -133,10 +136,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.w("InvalidDateException", e.getMessage());
                     invalidDate = true;
                     Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-
-                txtReminder.setText("");
-                txtDate.setText("");
+                }                
 
             }
         });
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         // Carrega a lista de lembretes predefinidos
-        dataManager.loadList();
+        //dataManager.loadList();
 
 
         // Atualiza os dados do adapter apenas se houver dados no ReminderDataManager

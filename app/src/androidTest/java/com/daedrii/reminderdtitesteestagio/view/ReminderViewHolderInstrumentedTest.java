@@ -77,7 +77,7 @@ public class ReminderViewHolderInstrumentedTest {
         viewHolderTest.bind(adapterTest.getReminders().get(0));
         String actualText = viewHolderTest.getLblReminder().getText().toString(); //Pega o nome do lembrete definido
 
-        assertEquals(TXT_REMINDER1, actualText); //Verifica se o texto exibido corresponde ao nome definido.
+        assertEquals(TXT_REMINDER, actualText); //Verifica se o texto exibido corresponde ao nome definido.
 
     }
 
